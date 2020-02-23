@@ -1,38 +1,44 @@
 # fast-cksum
-A fast, drop-in replacement for the GNU `cksum` utility.  Also has C and Python bindings.
+A fast, drop-in replacement for the GNU cksum utility.  Also has C and Python bindings.
 
 ## Overview
-The GNU `cksum` utility is very useful for computing 32-bit CRC checksums on files,
+The GNU cksum utility is very useful for computing 32-bit CRC checksums on files,
 but it's too slow for many applications.  Much faster CRC32 implementations are possible
 and are widely available online, but most (none?) of them use the same CRC algorithm
-as `cksum` because of its slightly non-standard algorithm.  Due to its ubiquity, however,
-it can be convenient to follow `cksum`'s conventions.  `fast-cksum` is designed to achieve
-the speed of modern CRC32 implementations while using the `cksum` algorithm.
+as cksum because of its slightly non-standard algorithm.  Due to its ubiquity, however,
+it can be convenient to follow cksum's conventions.  fast-cksum is designed to achieve
+the speed of modern CRC32 implementations while using the cksum algorithm.
 
-In particular, this code directly uses [Stephan Brumme's Fast CRC32 code](https://create.stephan-brumme.com/crc32/)
+In particular, this code directly uses [Stephan Brumme's Fast CRC32 code](https://github.com/stbrumme/crc32)
 as the core of its CRC32 functionality, but with newly computed lookup tables
-and a slightly modified algorithm to match `cksum`.
+and a slightly modified algorithm to match cksum.
 
 ## Requirements
-`fast-cksum` is written in C++11, although the header will compile against C99 code, too.  The Python bindings use Python 3 and CFFI.  The build system uses make.
+fast-cksum is written in C++11, although the header will compile against C99 code, too.  The Python bindings use Python 3 and CFFI.  The build system uses make.
 
 ## Compiling
 Run `make` from the repository root to build the command-line interface (CLI) and the Python bindings.  The CLI will be installed to `bin`.
 
 
 ## CLI Usage
-The usage of the CLI is very similar to GNU `cksum`: 
+The usage of the CLI is very similar to GNU cksum: 
 ```console
-$ ./bin/fast_cksum FILE [FILE]...
+$ fast_cksum FILE [FILE]...
 ```
 
-The output format is identical to that of GNU `cksum`.  In particular, there is one line of output per file in the format `<checksum> <file size> <filename>`.
+The output format is identical to that of GNU cksum.  In particular, there is one line of output per file in the format `<checksum> <file size> <filename>`.
 For example:
 ```
-1758675646 144185735 DESI_L760_N2660_prototype.z0.100.slab0000.field_pack9.dat
-1906361843 123906288 DESI_L760_N2660_prototype.z0.100.slab0000.field_pack9_pids.dat
-3087645703 100255241 DESI_L760_N2660_prototype.z0.100.slab0000.L0_pack9.dat
-2775744001 88244488 DESI_L760_N2660_prototype.z0.100.slab0000.L0_pack9_pids.dat
+1758675646 144185735 file1.dat
+1906361843 123906288 file2.dat
+3087645703 100255241 file3.dat
+2775744001 88244488 file4.dat
+```
+
+Another utility called `fast_cksum_store` is provided to read data from stdin and write it to a file while writing the checksum to stdout.
+For example, to write data from the `generate_data` program to `out.dat` while appending the checksum to `checksums.crc32`, use:
+```console
+$ generate_data | fast_cksum_store out.dat >> checksums.crc32
 ```
 
 ## Python Usage
@@ -74,3 +80,8 @@ The `fast_cksum` directory contains Python bindings.
 - Python documentation
 - CLI help
 - More performance numbers
+
+## License
+fast-cksum is licensed under the GPLv3, a copy of which is found in the `LICENSE` file.
+
+Stephan Brumme's Fast CRC32 code is used under the terms of the zlib license, a copy of which is found in the `license-stbrumme.crc32` file.
