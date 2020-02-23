@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
     }
     if(ferror(stdin)){
         perror("stdin");
+        exit(1);
     }
 
     fclose(fp);
@@ -66,4 +67,6 @@ int main(int argc, char *argv[]) {
     printf("%" PRIu32 " %" PRIu64 " %s\n", crc, totalsize, fn);
 
     free(buffer);
+
+    return 0;
 }
