@@ -2,12 +2,10 @@
 A fast, drop-in replacement for the GNU cksum utility.  Also has C and Python bindings.
 
 ## Overview
-The GNU cksum utility is very useful for computing 32-bit CRC checksums on files,
-but it's too slow for many applications.  Much faster CRC32 implementations are possible
-and are widely available online, but most (none?) of them use the same CRC algorithm
-as cksum because of its slightly non-standard algorithm.  Due to its ubiquity, however,
-it can be convenient to follow cksum's conventions.  fast-cksum is designed to achieve
-the speed of modern CRC32 implementations while using the cksum algorithm.
+fast-cksum is a checksum utility that computes a 32-bit CRC in the GNU cksum convention,
+using lookup tables for high performance.  This means that one can compute checksums
+with this utility and they can be verified by end users with GNU cksum (which, as part
+of GNU coreutils, is already installed on most Linux systems).
 
 In particular, this code directly uses [Stephan Brumme's Fast CRC32 code](https://github.com/stbrumme/crc32)
 as the core of its CRC32 functionality, but with newly computed lookup tables
