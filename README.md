@@ -50,8 +50,8 @@ impact on performance (while going from 8 to 16 is about a factor of 2).
 
 
 ## GNU cksum
-The GNU coreutils' cksum uses an unfortuantely non-standard variant of CRC32, but cksum's
-ubiquity on Linux system means we probably want to conform to that variant.  The generating
+The GNU coreutils' cksum uses an non-standard variant of CRC32, but cksum's
+ubiquity on Linux systems makes it useful to conform to that variant.  The generating
 polynomial is the usual one, just bit-reversed (see: https://en.wikipedia.org/wiki/Cyclic_redundancy_check#Polynomial_representations_of_cyclic_redundancy_checks).
 The byte processing order is also swapped.  We regenerated the lookup
 tables in Stephan Brumme's CRC32 code in this convention, and modified the algorithms
