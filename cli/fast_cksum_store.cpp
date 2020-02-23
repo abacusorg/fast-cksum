@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    FILE *fp = fopen(fn, "rb");
+    FILE *fp = fopen(fn, "wb");
     if (fp == NULL) {
         if(errno)
             perror(fn);
