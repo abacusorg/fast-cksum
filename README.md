@@ -7,7 +7,7 @@ using lookup tables for high performance.  This means that one can compute check
 with this utility and they can be verified by end users with GNU cksum (which, as part
 of GNU coreutils, is already installed on most Linux systems).
 
-In particular, this code directly uses [Stephan Brumme's Fast CRC32 code](https://github.com/stbrumme/crc32)
+In particular, this code uses [Stephan Brumme's Fast CRC32 code](https://github.com/stbrumme/crc32)
 as the core of its CRC32 functionality, but with newly computed lookup tables
 and a slightly modified algorithm to match cksum.
 
