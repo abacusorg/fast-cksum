@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     
     std::unordered_map<std::string,uint32_t> known_crcs;
     std::unordered_map<std::string,size_t> known_sizes;
-    char *line = NULL;  size_t linen;
+    char *line = NULL;  size_t linen = 0;
     while(getline(&line, &linen, cfp) != -1){
         uint32_t _crc; size_t _sz; char _fn[1024];
         int count = sscanf(line, "%u %zu %1023s\n", &_crc, &_sz, _fn);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         known_sizes[_fn] = _sz;
         known_crcs[_fn] = _crc;
     }
-
+    free(line);
     fclose(cfp);
 
 
