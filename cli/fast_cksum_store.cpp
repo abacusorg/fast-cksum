@@ -21,7 +21,7 @@ TODO: overlap compute and IO
 
 int main(int argc, char *argv[]) {
     if (argc != 2){
-        fprintf(stderr, "Incorrect number of arguments.\nUsage: generate_data | fast_cksum_store FILENAME [ >> CHECKSUM_FILE]\n");
+        fprintf(stderr, "[fast_cksum_store Error] Incorrect number of arguments.\nUsage: generate_data | fast_cksum_store FILENAME [ >> CHECKSUM_FILE]\n");
         exit(1);
     }
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     void *buffer = NULL;
     int ret = posix_memalign(&buffer, 65536, BUFSIZE);
     if(ret != 0 || buffer == NULL){
-        fprintf(stderr, "Failed to allocate %" PRIu64 " bytes\n", BUFSIZE);
+        fprintf(stderr, "[fast_cksum_store Error] Failed to allocate %" PRIu64 " bytes\n", BUFSIZE);
         exit(1);
     }
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
         if(errno)
             perror(fn);
         else
-            fprintf(stderr, "File %s not found or cannot be opened.\n", fn);
+            fprintf(stderr, "[fast_cksum_store Error] File %s not found or cannot be opened.\n", fn);
         exit(1);
     }
 
@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
     size_t count;
     while((count = fread(buffer, 1, BUFSIZE, stdin))){
         fwrite(buffer, 1, count, fp);
-        if(ferror(stdout)){
-            perror("stdout");
+        if(ferror(fp)){
+            perror(fn);
             exit(1);
         }
         partial_crc = crc32_fast_partial(buffer, count, partial_crc);
