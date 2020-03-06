@@ -83,6 +83,15 @@ int main(int argc, char *argv[]) {
     free(line);
     fclose(cfp);
 
+    // Check that all input files are present in the checksum list
+    for(int i = 0; i < ninputs; i++){
+        const char *fn = input_fns[i];
+        if(!known_crcs.count(fn)){
+            fprintf(stderr, "[fast_cksum_cat Error] File \"%s\" not found in checksum file %s\n", fn, checksum_fn);
+            exit(1);
+        }
+    }
+
 
     // Now start cat-ing and checksumming the input files
     for(int i = 0; i < ninputs; i++){
