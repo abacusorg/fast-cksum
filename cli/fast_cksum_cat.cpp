@@ -32,6 +32,10 @@ int main(int argc, char *argv[]) {
     int ninputs = 0;
     for(int i = 1; i < argc; i++){
         if(strcmp(argv[i],"-c") == 0){
+            if(checksum_fn != NULL){
+                fprintf(stderr, "[fast_cksum_cat Error] May only specify -c once!\n");
+                exit(1);
+            }
             i++;
             checksum_fn = argv[i];
         }
