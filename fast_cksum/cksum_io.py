@@ -94,19 +94,31 @@ class CksumReader:
         
         self.bytes_read = 0
     
-    def __call__(self, fn, verify_checksum=None, verbose=False):
+    def __call__(self, file, verify_checksum=None, verbose=False):
         if verify_checksum is None:
             verify_checksum = self.verify_checksums
         if verbose is None:
             verbose = self.verbose
             
+        if type(file) is str:
+            fn = file
+            fp = None
+        else:
+            fn = file.name
+            fp = file
+
         fnbase = basename(fn)
         if verify_checksum and fnbase not in self.known_checksums:
             raise ValueError(f'Filename "{fnbase}" not in checksum file {self.checksum_fn}!')
             
         # TODO: could read in blocks to trigger readahead
-        with open(fn, 'rb') as fp, self.io_timer:
+        if fp is None:
+            fp = open(fn, 'rb')
+        with self.io_timer:
             data = fp.read()
+        if file is not fp:
+            fp.close()
+
         data = memoryview(data)  # ?
         self.bytes_read += data.nbytes
             
