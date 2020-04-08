@@ -26,10 +26,13 @@ class ContextTimer(contexttimer.Timer):
 
     @property
     def elapsed(self):
-        last_time = super(ContextTimer, self).elapsed
+        if hasattr(self, 'start'):
+            last_time = super(ContextTimer, self).elapsed
+        else:
+            last_time = 0.
         return self.cumulative_time*self.factor + last_time
 
-    def start(self):
+    def Start(self):
         self.__enter__()
 
     def stop(self, report=True):
