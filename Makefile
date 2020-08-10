@@ -2,7 +2,7 @@
 #-include $(ABACUS)/common.mk
 
 CXX ?= g++
-CXXFLAGS += -O3 -g -std=c++11 -Wall -Wextra
+CXXFLAGS += -O3 -g -std=c++11 -Wall -Wextra -march=native
 CPPFLAGS += -Isrc
 
 TARGETS := fast_cksum/fast_cksum.so bin/fast_cksum bin/fast_cksum_store bin/fast_cksum_cat

@@ -30,6 +30,7 @@ void print_data(FILE *fp, const char *fn){
     }
     if(ferror(fp)){
         perror(fn);
+        return;
     }
 
     uint32_t crc = crc32_fast_finalize(totalsize, partial_crc);
