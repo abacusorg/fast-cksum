@@ -14,6 +14,7 @@ TODO: overlap compute and IO
 #include <cstdlib>
 #include <cerrno>
 #include <cstring>
+#include <string>
 #include <unordered_map>
 
 #include "fast_cksum.cpp"
