@@ -2,7 +2,7 @@
 Some IO interfaces that do checksumming on-the-fly.
 '''
 
-from os.path import basename
+from pathlib import Path
 
 from . import cksum_ffi
 from .context_timer import ContextTimer
@@ -12,14 +12,14 @@ class CksumWriter:
     A simple writer class that works with asdf
     '''
     def __init__(self, fn, *open_args, do_checksum=True, checksum_fn=None, **open_kwargs):
-        self.fn = fn
+        self.fn = Path(fn)
         self.open_args = open_args
         self.open_kwargs = open_kwargs
         self.bytes_written = 0
         self.do_checksum = do_checksum
 
         if checksum_fn is None:
-            self.checksum_fn = fn + '.crc32'
+            self.checksum_fn = self.fn.parent / (self.fn.name + '.crc32')
             self.checksum_file_mode = 'a'
         else:
             self.checksum_fn = checksum_fn
@@ -40,7 +40,7 @@ class CksumWriter:
         
         if self.do_checksum:
             with open(self.checksum_fn, self.checksum_file_mode) as cfp, self.checksum_timer:
-                cfp.write(f'{self.checksum} {self.bytes_written} {basename(self.fn)}\n')
+                cfp.write(f'{self.checksum} {self.bytes_written} {self.fn.name}\n')
     
     def write(self, data):  # asdf only seems to need one arg version
         data = memoryview(data)  # so we can use data.nbytes
@@ -50,7 +50,7 @@ class CksumWriter:
             
         with self.io_timer:
             size = self.fp.write(data)
-        self.bytes_written += size        
+        self.bytes_written += size
             
         return size
     
@@ -107,9 +107,8 @@ class CksumReader:
             fn = file.name
             fp = file
 
-        fnbase = basename(fn)
-        if verify_checksum and fnbase not in self.known_checksums:
-            raise ValueError(f'Filename "{fnbase}" not in checksum file {self.checksum_fn}!')
+        if verify_checksum and fn.name not in self.known_checksums:
+            raise ValueError(f'Filename "{fn.name}" not in checksum file {self.checksum_fn}!')
             
         # TODO: could read in blocks to trigger readahead
         if fp is None:
@@ -127,12 +126,12 @@ class CksumReader:
                 checksum = self._checksum_partial(data)
                 checksum = cksum_ffi.crc32_fast_finalize(data.nbytes, checksum)
 
-            if data.nbytes != self.known_checksums[fnbase]['size']:
+            if data.nbytes != self.known_checksums[fn.name]['size']:
                 raise ValueError(f"File size {data.nbytes} for file {fn} did not match "
-                                 f"size {self.known_checksums[fnbase]['size']} from {self.checksum_fn}")
-            elif checksum != self.known_checksums[fnbase]['crc32']:
+                                 f"size {self.known_checksums[fn.name]['size']} from {self.checksum_fn}")
+            elif checksum != self.known_checksums[fn.name]['crc32']:
                 raise ValueError(f"Checksum {checksum} for file {fn} did not match "
-                                 f"checksum {self.known_checksums[fnbase]['crc32']} from {self.checksum_fn}")
+                                 f"checksum {self.known_checksums[fn.name]['crc32']} from {self.checksum_fn}")
             else:
                 self.nverify += 1
             
