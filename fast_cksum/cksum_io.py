@@ -99,12 +99,12 @@ class CksumReader:
             verify_checksum = self.verify_checksums
         if verbose is None:
             verbose = self.verbose
-            
-        if type(file) is str:
-            fn = file
+
+        try:
+            fn = Path(file)
             fp = None
-        else:
-            fn = file.name
+        except:
+            fn = Path(file.name)
             fp = file
 
         if verify_checksum and fn.name not in self.known_checksums:
