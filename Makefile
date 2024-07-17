@@ -1,7 +1,6 @@
 # Use Abacus's build options if it exists
 #-include $(ABACUS)/common.mk
 
-CXX ?= g++
 CXXFLAGS += -O3 -g -std=c++11 -Wall -Wextra -march=native
 CPPFLAGS += -Isrc
 
