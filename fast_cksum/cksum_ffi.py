@@ -1,10 +1,11 @@
-'''
+"""
 Defines the FFI to crc32_fast
-'''
+"""
 
 from os.path import join as pjoin, dirname
 
 from cffi import FFI
+
 ffi = FFI()
 
 ffi.cdef("""
@@ -14,7 +15,7 @@ ffi.cdef("""
     uint32_t crc32_fast_finalize(size_t total_length, uint32_t previousCrc32);
     """)
 
-sopath = pjoin(dirname(__file__), "fast_cksum.so")
+sopath = pjoin(dirname(__file__), 'fast_cksum.so')
 lib = ffi.dlopen(sopath)
 
-globals().update({f:getattr(lib,f) for f in dir(lib)})
+globals().update({f: getattr(lib, f) for f in dir(lib)})
