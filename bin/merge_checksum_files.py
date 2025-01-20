@@ -18,7 +18,7 @@ def merge(checksum_files, delete=False):
     for fn in checksum_files:
         with open(fn,'r') as fp:
             lines += fp.readlines()
-    lines = [line.split() for line in lines]
+    lines = [line.split() for line in set(lines)]
     lines.sort(key=lambda l:l[-1])
     
     # Duplicates check
