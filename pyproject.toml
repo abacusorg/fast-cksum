@@ -17,5 +17,11 @@ dev = ["pre-commit"]
 build-backend = 'mesonpy'
 requires = ['meson-python']
 
+[tool.meson-python.args]
+setup = ['-Dcli=false', '-Dpy=true']
+
 [tool.ruff.format]
 quote-style = "single"
+
+[project.scripts]
+cksum-merge = "fast_cksum.cksum_merge:main"

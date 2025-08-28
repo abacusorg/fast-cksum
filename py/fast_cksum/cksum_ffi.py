@@ -23,6 +23,7 @@ uint32_t crc32_fast_partial(const void* data, size_t length, uint32_t previousCr
 uint32_t crc32_fast_finalize(size_t total_length, uint32_t previousCrc32);
 """)
 
+# TODO: doesn't work with editable installs
 sopath = pjoin(dirname(__file__), 'libfast_cksum.so')
 lib = ffi.dlopen(sopath)
 
