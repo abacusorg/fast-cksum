@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 """
 Merges checksum files in the cksum convention, sorting on filename.
 Writes to stdout.
 
 Usage
 -----
-$ ./merge_checksum_files.py --delete *.crc32 > checksums.crc32
+$ cksum-merge --delete *.crc32 > checksums.crc32
 """
 
 import os
@@ -46,7 +45,7 @@ class ArgParseFormatter(
     pass
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=ArgParseFormatter
     )
@@ -62,3 +61,7 @@ if __name__ == '__main__':
     args = vars(args)
 
     merge(**args)
+
+
+if __name__ == '__main__':
+    main()

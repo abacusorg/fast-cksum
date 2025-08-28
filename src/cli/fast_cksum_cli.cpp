@@ -4,31 +4,31 @@ A fast version of the GNU cksum utility.
 
 */
 
-#include <unistd.h>
-#include <stdio.h>
 #include <inttypes.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "fast_cksum.cpp"
 
-#define BUFSIZE (uint64_t) 64<<10  // 64 KB
+#define BUFSIZE (uint64_t) 64 << 10  // 64 KB
 
-void print_data(FILE *fp, const char *fn){
+void print_data(FILE *fp, const char *fn) {
     void *buffer = NULL;
-    int ret = posix_memalign(&buffer, 65536, BUFSIZE);
-    if(ret != 0 || buffer == NULL){
+    int ret      = posix_memalign(&buffer, 65536, BUFSIZE);
+    if (ret != 0 || buffer == NULL) {
         fprintf(stderr, "Failed to allocate %" PRIu64 " bytes\n", BUFSIZE);
         exit(1);
     }
 
     uint32_t partial_crc = CRC32_FAST_SEED;
-    size_t totalsize = 0;
+    size_t totalsize     = 0;
     size_t count;
-    while((count = fread(buffer, 1, BUFSIZE, fp))){
+    while ((count = fread(buffer, 1, BUFSIZE, fp))) {
         partial_crc = crc32_fast_partial(buffer, count, partial_crc);
         totalsize += count;
     }
-    if(ferror(fp)){
+    if (ferror(fp)) {
         perror(fn);
         return;
     }
@@ -46,15 +46,15 @@ int main(int argc, char *argv[]) {
         print_data(stdin, "");
     else {
         for (int f = 1; f < argc; f++) {
-	        FILE *fp;
-	        fp = fopen(argv[f],"rb");
-	        if (fp == NULL) {
-	            fprintf(stderr, "File %s not found or cannot be opened.\n", argv[f]);
-	        	exit(1);
-	        }
-	        print_data(fp, argv[f]);
-	        fclose(fp);
-    	}
+            FILE *fp;
+            fp = fopen(argv[f], "rb");
+            if (fp == NULL) {
+                fprintf(stderr, "File %s not found or cannot be opened.\n", argv[f]);
+                exit(1);
+            }
+            print_data(fp, argv[f]);
+            fclose(fp);
+        }
     }
     return 0;
 }

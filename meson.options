@@ -1,0 +1,2 @@
+option('py', type: 'boolean', value: true, description: 'Build Python bindings')
+option('cli', type: 'boolean', value: true, description: 'Build command-line tools')
