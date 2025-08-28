@@ -1,0 +1,21 @@
+[project]
+name = "fast-cksum"
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = ["cffi>=1.17.1", "contexttimer>=0.3.3"]
+description = "A fast, drop-in replacement for the GNU cksum utility. Also contains C and Python bindings."
+authors = [
+    { name = 'Lehman Garrison', email = 'lgarrison@flatironinstitute.org' },
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+[dependency-groups]
+dev = ["pre-commit"]
+
+[build-system]
+build-backend = 'mesonpy'
+requires = ['meson-python']
+
+[tool.ruff.format]
+quote-style = "single"

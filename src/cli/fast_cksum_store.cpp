@@ -9,53 +9,64 @@ TODO: overlap compute and IO
 
 */
 
-#include <unistd.h>
-#include <cstdio>
-#include <cinttypes>
-#include <cstdlib>
 #include <cerrno>
+#include <cinttypes>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
 
 #include "fast_cksum.cpp"
 
-#define BUFSIZE (uint64_t) 64<<10  // 64 KB
+#define BUFSIZE (uint64_t) 64 << 10  // 64 KB
 
 int main(int argc, char *argv[]) {
-    if (argc != 2){
-        fprintf(stderr, "[fast_cksum_store Error] Incorrect number of arguments.\nUsage: generate_data | fast_cksum_store FILENAME [ >> CHECKSUM_FILE]\n");
+    if (argc != 2) {
+        fprintf(
+           stderr,
+           "[fast_cksum_store Error] Incorrect number of arguments.\nUsage: generate_data | fast_cksum_store FILENAME [ >> CHECKSUM_FILE]\n"
+        );
         exit(1);
     }
 
     const char *fn = argv[1];
 
     void *buffer = NULL;
-    int ret = posix_memalign(&buffer, 65536, BUFSIZE);
-    if(ret != 0 || buffer == NULL){
-        fprintf(stderr, "[fast_cksum_store Error] Failed to allocate %" PRIu64 " bytes\n", BUFSIZE);
+    int ret      = posix_memalign(&buffer, 65536, BUFSIZE);
+    if (ret != 0 || buffer == NULL) {
+        fprintf(
+           stderr,
+           "[fast_cksum_store Error] Failed to allocate %" PRIu64 " bytes\n",
+           BUFSIZE
+        );
         exit(1);
     }
 
     FILE *fp = fopen(fn, "wb");
     if (fp == NULL) {
-        if(errno)
+        if (errno)
             perror(fn);
         else
-            fprintf(stderr, "[fast_cksum_store Error] File %s not found or cannot be opened.\n", fn);
+            fprintf(
+               stderr,
+               "[fast_cksum_store Error] File %s not found or cannot be opened.\n",
+               fn
+            );
         exit(1);
     }
 
     uint32_t partial_crc = CRC32_FAST_SEED;
-    size_t totalsize = 0;
+    size_t totalsize     = 0;
     size_t count;
-    while((count = fread(buffer, 1, BUFSIZE, stdin))){
+    while ((count = fread(buffer, 1, BUFSIZE, stdin))) {
         fwrite(buffer, 1, count, fp);
-        if(ferror(fp)){
+        if (ferror(fp)) {
             perror(fn);
             exit(1);
         }
         partial_crc = crc32_fast_partial(buffer, count, partial_crc);
         totalsize += count;
     }
-    if(ferror(stdin)){
+    if (ferror(stdin)) {
         perror("stdin");
         exit(1);
     }

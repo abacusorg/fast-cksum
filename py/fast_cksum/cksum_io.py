@@ -118,7 +118,7 @@ class CksumReader:
         try:
             fn = Path(file)
             fp = None
-        except:
+        except RuntimeError:
             fn = Path(file.name)
             fp = file
 

@@ -1,4 +1,3 @@
-bin/
-*.o
-*.so
 __pycache__/
+*.pyc
+build/

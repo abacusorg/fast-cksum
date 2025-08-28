@@ -1,6 +1,0 @@
-# This is a pip requirements.txt file.
-# Install these packages with:
-# $ pip install -r requirements.txt
-
-cffi
-contexttimer
