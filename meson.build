@@ -72,7 +72,6 @@ if get_option('cli')
     )
 endif
 
-fast_cksum_source_dep = declare_dependency(
+fast_cksum_header_only_dep = declare_dependency(
     include_directories: include,
-    sources: 'src/fast_cksum.cpp',
 )

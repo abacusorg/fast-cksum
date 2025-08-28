@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef PREFETCH
 #define PREFETCH(mem) __builtin_prefetch(mem)
 #endif
