@@ -46,6 +46,7 @@ if get_option('py')
         install: true,
         # We are only using the shared library from Python for now.
         install_dir: py.get_install_dir() / 'fast_cksum',
+        install_tag: 'python-runtime',
     )
 endif
 
