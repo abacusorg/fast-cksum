@@ -37,7 +37,7 @@ if get_option('py')
     )
 
     # the venv/bin dir
-    # scripts_dir = py.get_variable('scripts')
+    # scripts_dir = py.get_variable('base') / 'bin'
 
     fast_cksum_lib = shared_library(
         'fast_cksum',
