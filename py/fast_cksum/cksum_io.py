@@ -121,6 +121,9 @@ class CksumReader:
         except RuntimeError:
             fn = Path(file.name)
             fp = file
+        except TypeError:
+            fn = Path(file.name)
+            fp = file
 
         if verify_checksum and fn.name not in self.known_checksums:
             raise ValueError(
