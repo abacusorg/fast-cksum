@@ -121,7 +121,7 @@ class CksumReader:
         except RuntimeError:
             fn = Path(file.name)
             fp = file
-        except TypeError:
+        except TypeError:         #ACJ
             fn = Path(file.name)
             fp = file
 
