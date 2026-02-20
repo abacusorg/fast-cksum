@@ -12,10 +12,6 @@ project(
     ],
 )
 
-if get_option('optimization') == '3'
-    add_project_arguments(['-Ofast'], language: 'cpp')
-endif
-
 if not meson.is_cross_build()
     add_project_arguments(['-march=native'], language: 'cpp')
 endif
