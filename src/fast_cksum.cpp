@@ -17,8 +17,8 @@ https://pubs.opengroup.org/onlinepubs/009695399/utilities/cksum.html
 // defines __BYTE_ORDER as __LITTLE_ENDIAN or __BIG_ENDIAN
 #include <sys/param.h>
 
-// The standard CRC32 polynomial, in cksum's bit-reversed convention
-const uint32_t polynomial = 0x04C11DB7;
+// The standard CRC32 polynomial, in cksum's bit-reversed convention. Included for reference.
+// const uint32_t polynomial = 0x04C11DB7;
 
 /// swap endianess
 static inline uint32_t swap(uint32_t x) {
