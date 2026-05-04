@@ -12,9 +12,7 @@ project(
     ],
 )
 
-if not meson.is_cross_build()
-    add_project_arguments(['-march=native'], language: 'cpp')
-endif
+add_project_arguments(['-march=' + get_option('march')], language: 'cpp')
 
 include = include_directories('src', 'include')
 
